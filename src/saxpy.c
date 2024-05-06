@@ -50,6 +50,18 @@ void* saxpy(void* arg) {
 
 int main(int argc, char* argv[]) {
 
+    // Variables to obtain command line parameters
+    unsigned int seed = 1;
+    int p = 10000000;
+    int n_threads = 2;
+    int max_iters = 1000;
+    // Variables to perform SAXPY operation
+    double* X;
+    double a;
+    double* Y;
+    double* Y_avgs;
+
+   
     // Create thread data
     pthread_t threads[NUM_THREADS];
     struct ThreadData thread_data[NUM_THREADS];
@@ -77,10 +89,19 @@ int main(int argc, char* argv[]) {
     }
 
     gettimeofday(&t_end, NULL);
-
+    
     // Compute execution time
     double exec_time = (t_end.tv_sec - t_start.tv_sec) * 1000.0;  // sec to ms
     exec_time += (t_end.tv_usec - t_start.tv_usec) / 1000.0; // us to ms
+
+    printf("Execution time: %f ms \n", exec_time);
+    printf("Last 3 values of Y: %f, %f, %f \n", Y[p-3], Y[p-2], Y[p-1]);
+    printf("Last 3 values of Y_avgs: %f, %f, %f \n", Y_avgs[max_iters-3], Y_avgs[max_iters-2], Y_avgs[max_iters-1]);
+
+    // Free allocated memory
+    free(X);
+    free(Y);
+    free(Y_avgs);
 
     return 0;
 }
