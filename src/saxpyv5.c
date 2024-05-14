@@ -126,12 +126,13 @@ int main(int argc, char* argv[]){
     printf("a= %f \n", a);    
 #endif
 
-    pthread_t threads[n_threads];
-    thread_data_t thread_data[n_threads];
-    double* Y_part_sum = (double*) malloc(sizeof(double) * max_iters * n_threads);
+    pthread_t* threads = malloc(n_threads * sizeof(pthread_t));
+    thread_data_t* thread_data = malloc(n_threads * sizeof(thread_data_t));
+    double* Y_part_sum = malloc(sizeof(double) * max_iters * n_threads);
 
-    // Initialize thread data
-    for (i = 0; i < n_threads; i++) {
+    // Initialize thread data. Experimenting with posix_memalign
+    for (int i = 0; i < n_threads; i++) {
+        posix_memalign((void**)&thread_data[i].Y_part_sum, 64, max_iters * sizeof(double));
         thread_data[i].thread_id = i;
         thread_data[i].n_threads = n_threads;
         thread_data[i].p = p;
@@ -139,7 +140,6 @@ int main(int argc, char* argv[]){
         thread_data[i].a = a;
         thread_data[i].X = X;
         thread_data[i].Y = Y;
-        thread_data[i].Y_part_sum = Y_part_sum;
     }
 
     gettimeofday(&t_start, NULL);
