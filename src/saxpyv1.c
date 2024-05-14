@@ -19,7 +19,7 @@
 #include <sys/time.h>
 #include <pthread.h>
 
-#define NUM_THREADS 2
+#define NUM_THREADS 3
 
 struct ThreadData {
     int id;
@@ -120,6 +120,12 @@ int main(int argc, char* argv[]) {
     }
     printf("%f ]\n", Y[p - 1]);
 
+    printf("vector Y_avgs= [ ");
+	for(int i = 0; i < max_iters-1; i++){
+		printf("%f, ", Y_avgs[i]);
+	}
+	printf("%f ]\n", Y_avgs[max_iters-1]);
+
     printf("a= %f \n", a);
 #endif
 
@@ -158,6 +164,12 @@ int main(int argc, char* argv[]) {
         printf("%f, ", Y[i]);
     }
     printf("%f ]\n", Y[p - 1]);
+    
+	printf("Final vector Y_avgs= [ ");
+	for(int i = 0; i < max_iters-1; i++){
+		printf("%f, ", Y_avgs[i]);
+	}
+	printf("%f ]\n", Y_avgs[max_iters-1]);
 #endif
 
     // Compute execution time
